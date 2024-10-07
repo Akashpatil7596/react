@@ -31,12 +31,16 @@ export default function accountReducer(state = initialStateAccount, action) {
 }
 
 export function deposit(amount, currency) {
+  // If currency id USD
+
   if (currency === "USD") {
     return {
       type: "account/deposit",
       payload: amount,
     };
   }
+
+  // If currency is other than USD
 
   return async function (dispatch, getState) {
     const res = await fetch(
@@ -61,10 +65,10 @@ export function withdraw(amount) {
   };
 }
 
-export function requestLoan(amount) {
+export function requestLoan(amount, loanPurpose) {
   return {
     type: "account/requestLoan",
-    payload: { amount: amount, loanPurpose: "Buy a car" },
+    payload: { amount: amount, loanPurpose: loanPurpose },
   };
 }
 
