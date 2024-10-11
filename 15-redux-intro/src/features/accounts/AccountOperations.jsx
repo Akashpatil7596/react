@@ -1,6 +1,13 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { deposit, payLoan, requestLoan, withdraw } from "./accountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deposit,
+  depositAsync,
+  payLoan,
+  requestLoan,
+  withdraw,
+} from "./accountSlice";
+import accountReducer from "./accountSlice";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -11,8 +18,10 @@ function AccountOperations() {
 
   const dispatch = useDispatch();
 
+  const { loading } = useSelector((state) => state.accountReducer);
+
   function handleDeposit() {
-    dispatch(deposit(depositAmount, currency));
+    dispatch(depositAsync({ depositAmount, currency }));
     setDepositAmount("");
     setCurrency("");
   }
@@ -52,7 +61,9 @@ function AccountOperations() {
             <option value="GBP">British Pound</option>
           </select>
 
-          <button onClick={handleDeposit}>Deposit {depositAmount}</button>
+          <button onClick={handleDeposit}>
+            {loading ? "Loading..." : `Deposit ${depositAmount}`}
+          </button>
         </div>
 
         <div>
